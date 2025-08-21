@@ -4,44 +4,48 @@
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
 
-<h1>@Title User</h1>
-<hr />
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">@Title User</h4>
+                </div>
+                <div class="card-body">
+                    <EditForm Model="@user" OnValidSubmit="SaveUser">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
 
-<EditForm Model="@user" OnValidSubmit="SaveUser">
-    <DataAnnotationsValidator />
-    <div class="mb-3">
-        <label for="Name" class="form-label">Name</label>
-        <div class="col-md-4">
-            <InputText class="form-control" @bind-Value="user.Username" />
+                        <div class="mb-3">
+                            <label for="Name" class="form-label">Name</label>
+                            <InputText id="Name" class="form-control" @bind-Value="user.Username" placeholder="Enter name" />
+                            <ValidationMessage For="@(() => user.Username)" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="Address" class="form-label">Address</label>
+                            <InputText id="Address" class="form-control" @bind-Value="user.Address" placeholder="Enter address" />
+                            <ValidationMessage For="@(() => user.Address)" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="Cellnumber" class="form-label">Cell No</label>
+                            <InputText id="Cellnumber" class="form-control" @bind-Value="user.Cellnumber" placeholder="Enter cell number" />
+                            <ValidationMessage For="@(() => user.Cellnumber)" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="Emailid" class="form-label">E-mail</label>
+                            <InputText id="Emailid" class="form-control" @bind-Value="user.Emailid" placeholder="Enter email" />
+                            <ValidationMessage For="@(() => user.Emailid)" />
+                        </div>
+                        <div class="d-flex justify-content-end gap-2">
+                            <button type="submit" class="btn btn-success px-4">Save</button>
+                            <button type="button" class="btn btn-secondary px-4" @onclick="Cancel">Cancel</button>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
         </div>
-        <ValidationMessage For="@(() => user.Username)" />
     </div>
-    <div class="mb-3">
-        <label for="Address" class="form-label">Address</label>
-        <div class="col-md-4">
-            <InputText class="form-control" @bind-Value="user.Address" />
-        </div>
-        <ValidationMessage For="@(() => user.Address)" />
-    </div>
-    <div class="mb-3">
-        <label for="Cellnumber" class="form-label">Cell No</label>
-        <div class="col-md-4">
-            <InputText class="form-control" @bind-Value="user.Cellnumber" />
-        </div>
-        <ValidationMessage For="@(() => user.Cellnumber)" />
-    </div>
-    <div class="mb-3">
-        <label for="Emailid" class="form-label">E-mail</label>
-        <div class="col-md-4">
-            <InputText class="form-control" @bind-Value="user.Emailid" />
-        </div>
-        <ValidationMessage For="@(() => user.Emailid)" />
-    </div>
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary">Save</button>
-        <button class="btn btn-light" @onclick="Cancel">Cancel</button>
-    </div>
-</EditForm>
+</div>
 
 @code {
     [Parameter]
@@ -56,6 +60,11 @@
         {
             Title = "Edit";
             user = await Http.GetFromJsonAsync<User>("api/User/" + userId);
+        }
+        else
+        {
+            Title = "Add";
+            user = new();
         }
     }
 
